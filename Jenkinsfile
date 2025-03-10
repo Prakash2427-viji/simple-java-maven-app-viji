@@ -6,15 +6,27 @@ pipeline {
             reuseNode true
         }
     }
-    stages('Test') {
-          steps {
+
+    stages {  // ✅ stages block should be here
+        stage('Test') {  // ✅ Each stage needs a name
+            steps {
                 sh 'mvn test'
             }
-         stage('Deliver') {
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Deliver') {  // ✅ Each stage is at the same level
             steps {
                 sh './jenkins/scripts/deliver.sh'
             }
-        }  
-                          
+        }
+    }
 }
-}
+
+
+
+
