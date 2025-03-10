@@ -6,7 +6,7 @@ pipeline {
             reuseNode true
         }
     }
-    stage('Test') {
+    stages('Test') {
           steps {
                 sh 'mvn test'
             }
