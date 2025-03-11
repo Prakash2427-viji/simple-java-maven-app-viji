@@ -2,13 +2,17 @@ pipeline {
     agent {
         docker {
             image 'maven:3.9.2'
-            args '-X /root/.m2:/root/.m2'
+            args '--network=host'
         }
+    }
+    environment {
+        DOCKER_HOST = "tcp://jenkins-docker:2376"
+        DOCKER_TLS_VERIFY = "0"
     }
     stages {
         stage('Build') {
             steps {
-                sh 'mvn -B -DskipTests clean package'
+                sh 'mvn clean install'
             }
         }
     }
